@@ -1,0 +1,55 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id    String @id @default(cuid())
+  email String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  password Password?
+  notes    Note[]
+}
+
+model Password {
+  hash String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}
+
+model Note {
+  id    String @id @default(cuid())
+  title String
+  body  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+}
+
+// const stats = [
+//   { id: 'total', name: 'Total Supply', stat: '71,897', previousStat: '70,946', change: '12%', changeType: 'increase' },
+//   { id: 'circulating', name: 'Circulating Supply', stat: '9.57%', previousStat: '8.62%', change: '4.05%', changeType: 'increase' },
+//   { id: 'inflation', name: 'Avg. Daily Inflation', stat: '1,555,000', previousStat: '1,500,000', change: '2.02%', changeType: 'increase' },
+// ]
+
+model TokenSupply {
+  id       String   @id @default(cuid())
+  total    Float
+  unlocked Float
+  locked   Float
+  date     DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
