@@ -41,3 +41,17 @@ We will keep the framework of the Blues Stack as long as we can to keep this pro
   ```
 
 This starts your app in development mode, rebuilding assets on file changes.
+
+## Running the data crawler
+
+- Make sure the database is running.
+
+  ```sh
+  docker compose up -d postgres
+  ```
+
+- Run the apicrawl container.
+
+  ```sh
+  docker compose up -d --build apicrawl
+  ```
